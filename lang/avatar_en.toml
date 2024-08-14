@@ -1,3 +1,10 @@
 module_avatar = "Avatar"
 
 alt_avatar = "Avatar for %s"
+
+##########
+# Upload #
+##########
+upload_avatar = "Upload"
+mt_avatar_upload = "Upload Avatar"
+md_avatar_upload = "Upload your avatar image."
