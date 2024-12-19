@@ -7,7 +7,10 @@ from gdo.file.MethodFile import MethodFile
 
 class for_user(MethodFile):
 
-    def gdo_parameters(self) -> [GDT]:
+    def gdo_trigger(self) -> str:
+        return ''
+
+    def gdo_parameters(self) -> list[GDT]:
         return [
             GDT_User('user').not_null(),
         ]
@@ -15,7 +18,7 @@ class for_user(MethodFile):
     def get_user(self) -> GDO_User:
         return self.param_value('user')
 
-    def gdo_execute(self):
+    def gdo_execute(self) -> GDT:
         user = self.get_user()
         file = GDO_Avatar.for_user(user).get_file()
         return self.render_file(file)
