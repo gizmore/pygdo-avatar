@@ -18,7 +18,7 @@ class for_user(MethodFile):
     def get_user(self) -> GDO_User:
         return self.param_value('user')
 
-    async def gdo_execute(self) -> GDT:
+    def gdo_execute(self) -> GDT:
         user = self.get_user()
         file = GDO_Avatar.for_user(user).get_file()
         return self.render_file(file)

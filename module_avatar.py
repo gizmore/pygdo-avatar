@@ -29,10 +29,10 @@ class module_avatar(GDO_Module):
             GDT_File('default_avatar'),
         ]
 
-    async def cfg_default_avatar(self) -> GDO_File:
-        return await self.get_config_value('default_avatar')
+    def cfg_default_avatar(self) -> GDO_File:
+        return self.get_config_value('default_avatar')
 
-    async def gdo_user_settings(self) -> list[GDT]:
+    def gdo_user_settings(self) -> list[GDT]:
         return [
             GDT_Link().href(href('avatar', 'upload')).text('upload_avatar'),
         ]
