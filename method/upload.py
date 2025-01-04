@@ -12,7 +12,6 @@ class upload(MethodForm):
 
     def gdo_create_form(self, form: GDT_Form) -> None:
         form.add_field(
-            GDT_String('test'),
             GDT_File('image').not_null().images(),
         )
         super().gdo_create_form(form)
@@ -20,10 +19,8 @@ class upload(MethodForm):
     def form_submitted(self):
         image = self.param_value('image')
         image.save()
-
         GDO_Avatar.blank({
             'avatar_user': self._env_user.get_id(),
             'avatar_file': image.get_id(),
         }).insert()
-
         return self.msg('msg_avatar_uploaded')
