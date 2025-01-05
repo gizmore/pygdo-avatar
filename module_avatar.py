@@ -26,7 +26,7 @@ class module_avatar(GDO_Module):
 
     def gdo_module_config(self) -> list[GDT]:
         return [
-            GDT_File('default_avatar'),
+            GDT_File('default_avatar').not_null().upload_path('module_avatar.default_avatar'),
         ]
 
     def cfg_default_avatar(self) -> GDO_File:
