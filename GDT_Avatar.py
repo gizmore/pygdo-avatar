@@ -3,7 +3,6 @@ from gdo.ui.GDT_Image import GDT_Image
 
 
 class GDT_Avatar(GDT_Image):
-    _avatar_user: GDO_User
 
     def __init__(self, name: str):
         super().__init__(name)
