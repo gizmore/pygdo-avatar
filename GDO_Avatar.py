@@ -16,7 +16,7 @@ class GDO_Avatar(GDO):
     def gdo_columns(self) -> list[GDT]:
         return [
             GDT_User('avatar_user').primary().not_null(),
-            GDT_File('avatar_file').not_null(),
+            GDT_File('avatar_file').not_null().cascade_delete(),
             GDT_Created('avatar_created'),
         ]
 
