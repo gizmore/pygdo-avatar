@@ -9,5 +9,5 @@ class GDT_Avatar(GDT_Image):
 
     def for_user(self, user: GDO_User):
         self.gdo(user)
-        self.alternate('alt_avatar', [user.render_name()])
+        self.alternate('alt_avatar', (user.render_name(),))
         return self

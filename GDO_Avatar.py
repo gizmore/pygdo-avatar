@@ -49,7 +49,7 @@ class GDO_Avatar(GDO):
         return href('avatar', 'for_user', f'&user={uid}')
 
     def alt_text(self) -> str:
-        return t('avatar_alt_text', [self.get_user().render_name()])
+        return t('avatar_alt_text', (self.get_user().render_name(),))
 
     def html_gender_class(self):
         gender = self.get_user().get_setting_val('gender')
