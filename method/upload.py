@@ -1,4 +1,5 @@
 from gdo.avatar.GDO_Avatar import GDO_Avatar
+from gdo.base.Util import href
 from gdo.core.GDT_String import GDT_String
 from gdo.file.GDT_File import GDT_File
 from gdo.form.GDT_Form import GDT_Form
@@ -19,8 +20,9 @@ class upload(MethodForm):
     def form_submitted(self):
         image = self.param_value('image')
         image.save()
-        GDO_Avatar.blank({
+        avatar = GDO_Avatar.blank({
             'avatar_user': self._env_user.get_id(),
             'avatar_file': image.get_id(),
         }).insert()
-        return self.msg('msg_avatar_uploaded')
+        self.msg('msg_avatar_uploaded')
+        return self.redirect(href('avatar', 'set_avatar', f"&id={avatar.get_id()}"))

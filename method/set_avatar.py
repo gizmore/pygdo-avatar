@@ -10,6 +10,6 @@ class set_avatar(MethodForm):
 
     def gdo_create_form(self, form: GDT_Form) -> None:
         form.add_field(
-            GDT_Avatar('avatar'),
+            GDT_Avatar('id'),
         )
         super().gdo_create_form(form)
