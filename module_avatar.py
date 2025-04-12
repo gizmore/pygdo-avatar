@@ -30,7 +30,7 @@ class module_avatar(GDO_Module):
         ]
 
     def cfg_default_avatar(self) -> GDO_File:
-        return self.get_config_value('default_avatar')
+        return self.get_config_value('default_avatar')[0]
 
     def gdo_user_settings(self) -> list[GDT]:
         return [

@@ -12,13 +12,13 @@ class for_user(MethodFile):
 
     def gdo_parameters(self) -> list[GDT]:
         return [
-            GDT_User('user').not_null(),
+            GDT_User('id').not_null(),
         ]
 
     def get_user(self) -> GDO_User:
-        return self.param_value('user')
+        return self.param_value('id')
 
     def gdo_execute(self) -> GDT:
         user = self.get_user()
-        file = GDO_Avatar.for_user(user).get_file()
+        file = GDO_Avatar.for_user(user).get_file()[0]
         return self.render_file(file)

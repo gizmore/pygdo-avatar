@@ -11,5 +11,5 @@ class GDT_Avatar(GDT_Image):
     def for_user(self, user: GDO_User):
         self.gdo(user)
         self.alternate('alt_avatar', (user.render_name(),))
-        self.href(href('user', 'profile', f'&for={user.get_id()}'))
+        self.href(href('avatar', 'for_user', f'&id={user.get_id()}'))
         return self
