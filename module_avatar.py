@@ -37,4 +37,3 @@ class module_avatar(GDO_Module):
         return [
             GDT_Link().href(href('avatar', 'upload')).text('upload_avatar'),
         ]
-    
