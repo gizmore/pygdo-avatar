@@ -29,10 +29,12 @@ class module_avatar(GDO_Module):
             GDT_File('default_avatar').not_null().upload_path('module_avatar.default_avatar'),
         ]
 
-    def cfg_default_avatar(self) -> GDO_File:
-        return self.get_config_value('default_avatar')[0]
+    def cfg_default_avatar(self) -> GDO_File|None:
+        avatar = self.get_config_value('default_avatar')
+        return avatar[0] if avatar else None
 
     def gdo_user_settings(self) -> list[GDT]:
         return [
             GDT_Link().href(href('avatar', 'upload')).text('upload_avatar'),
         ]
+    
