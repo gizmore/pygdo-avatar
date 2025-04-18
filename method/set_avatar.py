@@ -5,7 +5,8 @@ from gdo.form.MethodForm import MethodForm
 
 class set_avatar(MethodForm):
 
-    def gdo_trigger(self) -> str:
+    @classmethod
+    def gdo_trigger(cls) -> str:
         return ''
 
     def gdo_create_form(self, form: GDT_Form) -> None:
