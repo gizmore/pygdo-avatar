@@ -1,6 +1,5 @@
 from gdo.avatar.GDO_Avatar import GDO_Avatar
-from gdo.base.Util import href
-from gdo.core.GDT_String import GDT_String
+from gdo.base.util.href import href
 from gdo.file.GDT_File import GDT_File
 from gdo.form.GDT_Form import GDT_Form
 from gdo.form.MethodForm import MethodForm

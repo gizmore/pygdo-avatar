@@ -1,4 +1,4 @@
-from gdo.base.Util import href
+from gdo.base.util.href import href
 from gdo.core.GDO_User import GDO_User
 from gdo.ui.GDT_Image import GDT_Image
 
