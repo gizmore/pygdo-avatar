@@ -16,4 +16,3 @@ class GDT_Avatar(GDT_Image):
 
     def render_card(self) -> str:
         return self.render_html()
-    
