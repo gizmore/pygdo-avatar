@@ -13,3 +13,7 @@ class GDT_Avatar(GDT_Image):
         self.alternate('alt_avatar', (user.render_name(),))
         self.href(href('avatar', 'for_user', f'&id={user.get_id()}'))
         return self
+
+    def render_card(self) -> str:
+        return self.render_html()
+    
