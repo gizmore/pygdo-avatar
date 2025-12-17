@@ -35,5 +35,5 @@ class module_avatar(GDO_Module):
 
     def gdo_user_settings(self) -> list[GDT]:
         return [
-            GDT_Link().href(href('avatar', 'upload')).text('upload_avatar'),
+            GDT_Link('change_avatar').href(href('avatar', 'upload')).text('upload_avatar'),
         ]
