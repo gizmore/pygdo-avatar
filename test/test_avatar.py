@@ -1,7 +1,6 @@
 import os
-import unittest
 
-from gdo.avatar.GDO_Avatar import GDO_Avatar
+from gdo.avatar.GDT_Avatar import GDT_Avatar
 from gdo.base.Application import Application
 from gdo.base.ModuleLoader import ModuleLoader
 from gdo.base.Util import module_enabled
@@ -11,14 +10,14 @@ from gdotest.TestUtil import web_plug, reinstall_module, web_gizmore, install_mo
 
 class AvatarTest(GDOTestCase):
 
-    def setUp(self):
-        super().setUp()
+    async def asyncSetUp(self):
+        await super().asyncSetUp()
         Application.init(os.path.dirname(__file__ + "/../../../../"))
         Application.init_cli()
         install_module('avatar')
         loader = ModuleLoader.instance()
         loader.load_modules_db()
-        loader.init_modules(load_vals=True)
+        loader.init_modules(True, load_vals=True)
         loader.init_cli()
         Application.set_session(GDO_Session.for_user(web_gizmore()))
 
@@ -31,7 +30,7 @@ class AvatarTest(GDOTestCase):
         self.assertIn('image', out, 'Avatar upload file is not rendered.')
 
     def test_02_render(self):
-        avatar = GDO_Avatar.for_user(web_gizmore())
+        avatar = GDT_Avatar('a').for_user(web_gizmore())
         out = avatar.render_html()
         self.assertIn('avatar', out, 'cannot render avatar.')
 
