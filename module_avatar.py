@@ -34,7 +34,7 @@ class module_avatar(GDO_Module):
 
     def gdo_user_config(self) -> list[GDT]:
         return [
-            GDT_Avatar('avatar_file'),
+            GDT_Avatar('avatar_file').hidden(),
         ]
 
     def gdo_user_settings(self) -> list[GDT]:
