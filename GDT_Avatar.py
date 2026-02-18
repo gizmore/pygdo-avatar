@@ -25,9 +25,7 @@ class GDT_Avatar(GDT_Image):
 
     def html_gender_class(self):
         gender = self._gdo.get_setting_val('gender')
-        if not gender:
-            return ''
-        return f'gdo-avatar-{gender}'
+        return '' if not gender else gender
 
     def href_render(self):
         uid = self._gdo.get_id()
@@ -37,7 +35,7 @@ class GDT_Avatar(GDT_Image):
             return href('avatar', 'default', f'&file={self.get_default_id()}')
 
     def alt_text(self) -> str:
-        return t('avatar_alt_text', (self._gdo.render_name(),))
+        return t('alt_avatar', (self._gdo.render_name(),))
 
     def render_card(self) -> str:
         return self.render_html()
