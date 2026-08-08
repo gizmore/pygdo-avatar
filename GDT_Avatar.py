@@ -18,6 +18,9 @@ class GDT_Avatar(GDT_Image):
         self.href(href('avatar', 'for_user', f'&id={user.get_id()}&file={self.get_val()}'))
         return self
 
+    def is_filterable(self) -> bool:
+        return False
+
     @classmethod
     @lru_cache(maxsize=None)
     def get_default_id(cls):
@@ -42,3 +45,6 @@ class GDT_Avatar(GDT_Image):
 
     def render_html(self) -> str:
         return f'<span class="gdo-avatar {self.html_gender_class()}"><img src="{self.href_render()}" alt="{self.alt_text()}"></span>'
+
+    def render_cell(self) -> str:
+        return self.render_html()

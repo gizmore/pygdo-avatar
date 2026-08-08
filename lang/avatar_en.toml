@@ -1,5 +1,6 @@
 module_avatar = "Avatar"
 
+avatar = "Avatar"
 alt_avatar = "Avatar for %s"
 
 ##########
