@@ -21,7 +21,7 @@ class module_avatar(GDO_Module):
     async def gdo_install(self):
         if not self.cfg_default_avatar():
             file = GDO_File.from_path(self.file_path('img/default.jpeg')).save()
-            self.save_config_val('default_avatar', file.get_id())
+            await self.save_config_val('default_avatar', file.get_id())
 
     def gdo_module_config(self) -> list[GDT]:
         return [
