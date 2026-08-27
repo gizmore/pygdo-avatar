@@ -44,7 +44,8 @@ class GDT_Avatar(GDT_Image):
         return self.render_html()
 
     def render_html(self) -> str:
-        return f'<span class="gdo-avatar {self.html_gender_class()}"><img src="{self.href_render()}" alt="{self.alt_text()}"></span>'
+        classes = f'gdo-avatar {self.html_gender_class()} {self.get_attrs().get("class", "")}'.strip()
+        return f'<span class="{classes}"><img src="{self.href_render()}" alt="{self.alt_text()}"></span>'
 
     def render_cell(self) -> str:
         return self.render_html()

@@ -19,6 +19,12 @@
   display:block;
 }
 
+/* The profile card deliberately gives its avatar more visual weight. */
+.gdo-avatar.gdo-avatar-profile{
+  width:10rem;
+  height:10rem;
+}
+
 /* Gender accent */
 .gdo-avatar.male{
   border-color: rgba(0,123,255,.5);
