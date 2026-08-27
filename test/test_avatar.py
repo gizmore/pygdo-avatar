@@ -4,6 +4,8 @@ from gdo.avatar.GDT_Avatar import GDT_Avatar
 from gdo.base.Application import Application
 from gdo.base.ModuleLoader import ModuleLoader
 from gdo.base.Util import module_enabled
+from gdo.core.GDO_File import GDO_File
+from gdo.core.GDO_UserSetting import GDO_UserSetting
 from gdo.core.GDO_Session import GDO_Session
 from gdotest.TestUtil import web_plug, reinstall_module, web_gizmore, install_module, GDOTestCase
 
@@ -38,4 +40,44 @@ class AvatarTest(GDOTestCase):
         web_plug('core.whoami.html').exec()
         data = b'-----------------------------283687824923932629242982017982\r\nContent-Disposition: form-data; name=\"test\"\r\n\r\ngjgjgj\r\n-----------------------------283687824923932629242982017982\r\nContent-Disposition: form-data; name=\"image\"; filename=\"AnschreibenAndrena.txt\"\r\nContent-Type: text/plain\r\n\r\nHallo,\n\nIch bewerbe mich f\\xc3\\xbcr eine Anstellung als Programmierer,\n\nIch heisse Christian, bin 43 Jahre alt, und komme aus Peine, Niedersachsen.\n\nIch spreche einige Programmiersprachen fliessend, darunter PHP, Java, Jacascript, Python, Ruby und C.\n\nIm Design bin ich nicht der beste, kann aber Anforderungen in CSS umsetzen.\n\nIch bin der Kopf und Programmierer hinter www.wechall.net und kenne mich auch in Datenbanken etwas aus.\n\nMeherer GB CSV streame ich zum Fr\\xc3\\xbchst\\xc3\\xbcck ^^\n\nIch hoffe ich habe interesse geweckt.\n\nViele Gr\\xc3\\xbc\\xc3\\x9fe\nChristian Busch\ngizmore@wechall.net\n\n\r\n-----------------------------283687824923932629242982017982\r\nContent-Disposition: form-data; name=\"csrf\"\r\n\r\n243e71619862\r\n-----------------------------283687824923932629242982017982\r\nContent-Disposition: form-data; name=\"submit\"\r\n\r\nSubmit\r\n-----------------------------283687824923932629242982017982--\r\n'
         out = web_plug('avatar.upload.html').post_multipart(data, '---------------------------283687824923932629242982017982').exec()
-        self.assertIn('format is not supported', out, 'Can upload text file to avatars.')
+        self.assertIn('file format text/plain is not supported', out, 'Can upload text file to avatars.')
+
+    def test_04_avatar_renders_the_users_saved_file(self):
+        user = web_gizmore()
+        user.save_setting('avatar_file', '123')
+        avatar = GDT_Avatar('avatar').for_user(user)
+        self.assertIn('file.123', avatar.render_html())
+
+    def test_05_set_avatar_saves_the_selected_image(self):
+        user = web_gizmore()
+        file = GDO_File.from_path(Application.file_path('gdo/avatar/img/default.jpeg')).save()
+        out = web_plug(f'avatar.set_avatar.html?_lang=en&id={file.get_id()}').user('gizmore').exec()
+        # test_04 populated this setting on a different in-memory user object.
+        # Reload it for this request instead of asserting against that stale value.
+        user._vals.pop('avatar_file', None)
+        saved = GDO_UserSetting.table().get_by_vals({
+            'uset_user': user.get_id(),
+            'uset_key': 'avatar_file',
+        })
+        self.assertEqual(file.get_id(), saved.gdo_val('uset_val'), out)
+        self.assertIn(f'file.{file.get_id()}', GDT_Avatar('avatar').for_user(user).render_html())
+        self.assertIn('Your avatar has been set.', out)
+
+    def test_06_upload_sets_avatar(self):
+        user = web_gizmore()
+        boundary = '----PyGDOAvatarUpload'
+        with open(Application.file_path('gdo/avatar/img/default.jpeg'), 'rb') as image:
+            data = (
+                f'--{boundary}\r\n'
+                'Content-Disposition: form-data; name="image"; filename="avatar.jpeg"\r\n'
+                'Content-Type: image/jpeg\r\n\r\n'
+            ).encode() + image.read() + f'\r\n--{boundary}--\r\n'.encode()
+        out = web_plug('avatar.upload.html?_lang=en').user('gizmore').post_multipart(data, boundary).exec()
+        user._vals.pop('avatar_file', None)
+        file_id = GDO_UserSetting.table().get_by_vals({
+            'uset_user': user.get_id(),
+            'uset_key': 'avatar_file',
+        }).gdo_val('uset_val')
+        file = GDO_File.table().get_by_id(file_id)
+        self.assertTrue(file.is_image(), out)
+        self.assertIn(f'file.{file.get_id()}', GDT_Avatar('avatar').for_user(user).render_html())

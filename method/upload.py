@@ -18,7 +18,8 @@ class upload(MethodForm):
 
     def form_submitted(self):
         image = self.param_value('image')[0]
-        image.save()
         self._env_user.save_setting('avatar_file', image.get_id())
-        self.msg('msg_avatar_uploaded')
-        return self.redirect(href('avatar', 'set_avatar', f"&id={image.get_id()}"), 'msg_avatar_uploaded')
+        return self.redirect_msg(
+            href('user', 'profile', f'&for={self._env_user.render_name()}'),
+            'msg_avatar_uploaded',
+        )

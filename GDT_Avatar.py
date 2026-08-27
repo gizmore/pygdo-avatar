@@ -14,6 +14,7 @@ class GDT_Avatar(GDT_Image):
 
     def for_user(self, user: GDO_User):
         self.gdo(user)
+        self.val(user.get_setting_val('avatar_file'))
         self.alternate('alt_avatar', (user.render_name(),))
         self.href(href('avatar', 'for_user', f'&id={user.get_id()}&file={self.get_val()}'))
         return self
