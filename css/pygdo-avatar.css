@@ -33,3 +33,27 @@
 .gdo-avatar.female{
   border-color: rgba(233,30,99,.5);
 }
+
+/* Public avatar gallery. Each tile is one profile link, including its name. */
+.avatar-gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(10rem, 1fr));
+  gap:1rem;
+  align-items:start;
+}
+
+.avatar-gallery-tile{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:.35rem;
+  width:100%;
+  text-align:center;
+  overflow-wrap:anywhere;
+}
+
+.avatar-gallery .gdo-avatar{
+  width:8rem;
+  height:8rem;
+  border-radius:25%;
+}

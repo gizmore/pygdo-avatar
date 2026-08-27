@@ -2,6 +2,7 @@ from gdo.avatar.GDT_Avatar import GDT_Avatar
 from gdo.base.GDO_Module import GDO_Module
 from gdo.base.GDT import GDT
 from gdo.base.util.href import href
+from gdo.core.GDT_Bool import GDT_Bool
 from gdo.core.GDO_File import GDO_File
 from gdo.file.GDT_File import GDT_File
 from gdo.ui.GDT_Link import GDT_Link
@@ -26,6 +27,7 @@ class module_avatar(GDO_Module):
     def gdo_module_config(self) -> list[GDT]:
         return [
             GDT_File('default_avatar').not_null().upload_path('module_avatar.default_avatar'),
+            GDT_Bool('show_avatar_gallery').not_null().initial('0'),
         ]
 
     def cfg_default_avatar(self) -> GDO_File|None:
@@ -44,3 +46,9 @@ class module_avatar(GDO_Module):
 
     def gdo_load_scripts(self, page: 'GDT_Page'):
         self.add_css('css/pygdo-avatar.css')
+
+    def gdo_init_sidebar(self, page: 'GDT_Page'):
+        if self.get_config_value('show_avatar_gallery'):
+            page._left_bar.add_field(
+                GDT_Link().href(self.href('gallery')).text('mt_avatar_gallery').icon('users')
+            )

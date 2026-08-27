@@ -10,3 +10,10 @@ upload_avatar = "Upload"
 mt_avatar_upload = "Upload Avatar"
 md_avatar_upload = "Upload your avatar image."
 msg_avatar_set = "Your avatar has been set."
+
+###########
+# Gallery #
+###########
+mt_avatar_gallery = "Avatar Gallery"
+md_avatar_gallery = "Browse user avatars."
+show_avatar_gallery = "Show avatar gallery in the left sidebar"

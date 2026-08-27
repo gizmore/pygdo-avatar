@@ -7,6 +7,7 @@ from gdo.base.Util import module_enabled
 from gdo.core.GDO_File import GDO_File
 from gdo.core.GDO_UserSetting import GDO_UserSetting
 from gdo.core.GDO_Session import GDO_Session
+from gdo.core.connector.Web import Web
 from gdotest.TestUtil import web_plug, reinstall_module, web_gizmore, install_module, GDOTestCase
 
 
@@ -81,3 +82,29 @@ class AvatarTest(GDOTestCase):
         file = GDO_File.table().get_by_id(file_id)
         self.assertTrue(file.is_image(), out)
         self.assertIn(f'file.{file.get_id()}', GDT_Avatar('avatar').for_user(user).render_html())
+
+    async def test_07_gallery_shows_only_non_default_avatars(self):
+        custom = await Web.get_server().get_or_create_user('AvatarGalleryCustom')
+        default = await Web.get_server().get_or_create_user('AvatarGalleryDefault')
+        custom.save_setting('avatar_file', '123')
+        default.save_setting('avatar_file', GDT_Avatar.get_default_id())
+
+        out = web_plug('avatar.gallery.html?_lang=en').exec()
+
+        self.assertIn('class="gdt-container avatar-gallery"', out)
+        self.assertIn('class="gdt-container gdt-col avatar-gallery-tile"', out)
+        self.assertIn('AvatarGalleryCustom', out)
+        self.assertIn('file.123', out)
+        self.assertNotIn('AvatarGalleryDefault', out)
+
+    def test_08_gallery_sidebar_option(self):
+        module = ModuleLoader.instance().get_module('avatar')
+        old = module.get_config_val('show_avatar_gallery')
+        try:
+            # This is a rendering concern. Do not persist a module setting in
+            # a test because persisting emits IPC into a different test loop.
+            module.config_column('show_avatar_gallery').val('1')
+            out = web_plug('core.welcome.html?_lang=en').exec()
+            self.assertIn('Avatar Gallery', out)
+        finally:
+            module.config_column('show_avatar_gallery').val(old)
