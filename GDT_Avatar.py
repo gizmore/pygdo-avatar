@@ -11,6 +11,10 @@ class GDT_Avatar(GDT_Image):
 
     def __init__(self, name: str):
         super().__init__(name)
+        # Avatars are user settings, not disposable form attachments.  Their
+        # setting may be cleared deliberately, but a generic file form must
+        # never delete the uploaded file behind it.
+        self.no_delete(True)
 
     def for_user(self, user: GDO_User):
         self.gdo(user)

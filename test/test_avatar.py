@@ -36,6 +36,7 @@ class AvatarTest(GDOTestCase):
         avatar = GDT_Avatar('a').for_user(web_gizmore())
         out = avatar.render_html()
         self.assertIn('avatar', out, 'cannot render avatar.')
+        self.assertTrue(avatar._no_delete, 'avatars must not use generic file deletion')
 
     def test_03_upload_text(self):
         web_plug('core.whoami.html').exec()
