@@ -1,6 +1,7 @@
 from gdo.avatar.GDT_Avatar import GDT_Avatar
 from gdo.base.GDO_Module import GDO_Module
 from gdo.base.GDT import GDT
+from gdo.base.Util import Files
 from gdo.base.util.href import href
 from gdo.core.GDT_Bool import GDT_Bool
 from gdo.core.GDO_File import GDO_File
@@ -20,9 +21,14 @@ class module_avatar(GDO_Module):
         ]
 
     async def gdo_install(self):
-        if not self.cfg_default_avatar():
-            file = GDO_File.from_path(self.file_path('img/default.jpeg')).save()
-            await self.save_config_val('default_avatar', file.get_id())
+        source = self.file_path('img/default.jpeg')
+        if avatar := self.cfg_default_avatar():
+            target = avatar.get_path()
+            if not Files.is_file(target):
+                Files.copy(source, target)
+            return
+        file = GDO_File.from_path(source).save()
+        await self.save_config_val('default_avatar', file.get_id())
 
     def gdo_module_config(self) -> list[GDT]:
         return [
